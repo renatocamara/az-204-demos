@@ -1,15 +1,25 @@
-#bash script
+# Create an App Service app with deployment from GitHub
 
-# generate a unique name and store as a shell variable
-webappname=mywebapp$RANDOM
+# Variable block
+location="eastus"
+resourceGroup="Demo-AZ204-M01"
+tag="deploy-from-github"
+webappname=mywebapp$RANDOM # generate a unique name
+appServicePlan="app-service-plan-$webappname"
+echo "Web-App-Name=""$webappname"
+echo "App-Service-Plan=""$appServicePlan" 
 
-# create a resource group
-az group create --location eastus --name Demo-AZ204-M01
+# Create a resource group.
+echo "Creating $resourceGroup in" "$location"
+az group create --name $resourceGroup --location "$location" --tag $tag
 
-# create an App Service plan
-az appservice plan create --name $webappname --resource-group Demo-AZ204-M01 --sku FREE
+# Create an App Service plan in `FREE` tier.
+echo "Creating" $appServicePlan
+az appservice plan create --name $appServicePlan --resource-group $resourceGroup --sku FREE
 
-# create a Web App
-az webapp create --name $webappname --resource-group Demo-AZ204-M01 --plan $webappname
+# Create a web app.
+echo "Creating" $webappname
+az webapp create --name $webappname --resource-group $resourceGroup --plan $appServicePlan
 
-
+# test web app
+az webapp browse --name $webappname --resource-group $resourceGroup
