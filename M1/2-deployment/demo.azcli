@@ -1,4 +1,4 @@
-#create resourece group
+#create resource group
 az group create --name Demo-AZ204-M01 --location eastus
 
 account=web-$RANDOM
@@ -24,7 +24,7 @@ az webapp browse --name $account --resource-group Demo-AZ204-M01
 ################################
 
 # store a repository url as a shell variable
-gitrepo=https://github.com/true-while/secure-web-https.git
+gitrepo=https://github.com/renatocamara/secure-web-https.git
 
 # deploy code from a Git repository
 az webapp deployment source config --name $account --resource-group Demo-AZ204-M01 --repo-url $gitrepo --branch master
