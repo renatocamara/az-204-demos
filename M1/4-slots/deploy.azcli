@@ -1,0 +1,38 @@
+#bash script
+
+#create resource group
+az group create -l eastus -n Demo-AZ204-Slots
+
+#webapp name
+account=slot-$RANDOM
+
+#create app service plan
+az appservice plan create --name $account-plan --resource-group Demo-AZ204-Slots --sku S1 --is-linux 
+
+#create web app
+az webapp create --name $account  --resource-group Demo-AZ204-Slots --plan $account-plan --runtime "NODE:16-lts"
+
+#deploy
+az webapp deploy --name $account  --resource-group Demo-AZ204-Slots --type zip --src-path 'web-broken.zip' 
+
+# test web app
+az webapp browse --name $account  --resource-group Demo-AZ204-Slots  # should be with "fix me"
+
+# create stage slot
+az webapp deployment slot create --name $account --resource-group Demo-AZ204-Slots  --slot staging
+
+# deploy to slot from ZIP
+az webapp deployment source config-zip --name $account --resource-group Demo-AZ204-Slots --slot staging --src web-fixed.zip
+
+az webapp browse --slot staging --name $account  --resource-group Demo-AZ204-Slots
+
+#swap slots
+az webapp deployment slot swap --name $account --resource-group Demo-AZ204-Slots --slot staging --action swap
+#https://slot-demo-staging.azurewebsites.net
+#https://slot-demo.azurewebsites.net
+
+#check the slot 
+az webapp browse --slot staging --name $account  --resource-group Demo-AZ204-Slots
+
+#check the main app 
+az webapp browse --name $account  --resource-group Demo-AZ204-Slots
