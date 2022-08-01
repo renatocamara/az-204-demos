@@ -1,7 +1,5 @@
-#bash script
-
-# create resource group
-az group create -l eastus -n Demo-AZ204-Blobs 
+#create resource group
+az group create -l eastus -n Demo-AZ204-Blobs
 
 # to avoid name collisions generate unique name for your account
 account=azureblobs$RANDOM
@@ -11,7 +9,7 @@ echo $account
 az storage account create --name $account --resource-group Demo-AZ204-Blobs 
 
 #retrieve key
-key=$(az storage account keys list --account-name $account --query [0].value -o tsv)
+key=$(az storage account keys list --account-name $account --resource-group Demo-AZ204-Blobs --query "[0].value")
 
 #Copy the connection string for further use.
 connectionString=$(az storage account show-connection-string --name $account --resource-group Demo-AZ204-Blobs -o tsv)  
@@ -28,6 +26,3 @@ az storage blob show --name img.png --account-name $account  --account-key $key 
 
 #list URL to access from Edge
 echo https://$account.blob.core.windows.net/products/img.png
-
-
-
