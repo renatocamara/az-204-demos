@@ -1,9 +1,6 @@
-# Create an App Service app with deployment from GitHub
-
 # Variable block
 location="eastus"
 resourceGroup="Demo-AZ204-M01"
-tag="deploy-from-github"
 webappname=mywebapp$RANDOM # generate a unique name
 appServicePlan="app-service-plan-$webappname"
 echo "Web-App-Name=""$webappname"
@@ -11,7 +8,7 @@ echo "App-Service-Plan=""$appServicePlan"
 
 # Create a resource group.
 echo "Creating $resourceGroup in" "$location"
-az group create --name $resourceGroup --location "$location" --tag $tag
+az group create --name $resourceGroup --location "$location"
 
 # Create an App Service plan in `FREE` tier.
 echo "Creating" $appServicePlan
