@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using System.Collections.Generic;
+using Azure;
 
 namespace DemoBlobProject
 {
@@ -19,6 +20,7 @@ namespace DemoBlobProject
         //update connection string from keys section on your storage account. Account was build in previous demos
         static string connectionString = "<your storage account string>";
         static string containerName = "orders";
+        static string customerName = "Woodrow";
 
         static void Main(string[] args)
         {
@@ -27,12 +29,12 @@ namespace DemoBlobProject
 
         static async Task Run()
         {
-            // Create a BlobServiceClient object which will be used to create a container client
+            // Create a BlobServiceClient object which will be used to create a container
             BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
 
             Console.WriteLine("Part 1: Creating customers");
             
-            // Create Container Client 
+            // Create Container 
             var container = await BuildContainer(blobServiceClient);
 
             //create a few orders to be stored as files.
@@ -47,19 +49,29 @@ namespace DemoBlobProject
 
             Console.WriteLine("Part 2: Search for customers");
 
-            //search for order by customer Woodrow 
-            var list = await FindTheCustomer("Woodrow", blobServiceClient);
+            //search for order by customer            
+            Console.WriteLine("Searching customer->" + customerName);
+            var list = await FindTheCustomer(customerName, blobServiceClient);
 
-            foreach(var customer in list)
-            {
-                Console.WriteLine($"Found id = {customer.Id}");
+            if(list.Count > 0) { //greater than zero
+                Console.WriteLine("Yes, I found it " + list.Count + " occurrence(s)" + " for customer name -> " + customerName);
+
+                foreach(var customer in list)
+                {
+                    Console.WriteLine($"Found id = {customer.Id}");
+                }
+
+                Console.WriteLine("Part 3: Pull meta data");
+                //read container meta data
+                GetContainerMetadata(blobServiceClient);
+
+                // delete container
+                //await DeleteSampleContainerAsync(blobServiceClient, containerName);
+                
+            } else {
+                Console.WriteLine("I'm sorry, I didn't found it");
             }
-
-            Console.WriteLine("Part 3: Pull meta data");
-
-            //read container meta data
-            GetContainerMetadata(blobServiceClient);
-
+   
         }
 
 
@@ -106,8 +118,9 @@ namespace DemoBlobProject
             await containerClient.CreateIfNotExistsAsync();
 
             // Update container meta data
+            // You can use metadata to store additional values with the resource. 
+            // Metadata values are for your own purposes only, and do not affect how the resource behaves.
             await containerClient.SetMetadataAsync(containerMetaData);
-
             return containerClient;
         }
 
@@ -185,6 +198,28 @@ namespace DemoBlobProject
             await blob.UploadAsync(binData, opt);     
 
         }
+
+        //-------------------------------------------------
+        // Delete a container
+        //-------------------------------------------------
+        static async Task DeleteSampleContainerAsync(BlobServiceClient blobServiceClient, string containerName)
+        {
+            BlobContainerClient container = blobServiceClient.GetBlobContainerClient(containerName);
+
+            try
+            {
+                // Delete the specified container and handle the exception.
+                await container.DeleteAsync();
+            }
+            catch (RequestFailedException e)
+            {
+                Console.WriteLine("HTTP error code {0}: {1}",
+                                    e.Status, e.ErrorCode);
+                Console.WriteLine(e.Message);
+                Console.ReadLine();
+            }
+        }
+
     }
 }
 
