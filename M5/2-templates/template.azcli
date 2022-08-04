@@ -1,10 +1,12 @@
-#bash script
+# Variable block
+location="eastus"
+resourceGroupName="Demo-AZ204-M5-ARM"
 
 #group to deploy template
-az group create --name "Demo-AZ204-ARM" --location "eastus"
+az group create --name $resourceGroupName --location $location
 
 #start template deployment
-az group deployment create --name "newdeployment" --resource-group "Demo-AZ204-ARM" --template-file "template.json" --parameters "parameters.json"
+az group deployment create --name "newdeployment" --resource-group $resourceGroupName --template-file "template.json" --parameters "parameters.json"
 
 #pull the accounts from the RG
-az storage account list --resource-group "Demo-AZ204-ARM"
+az storage account list --resource-group $resourceGroupName

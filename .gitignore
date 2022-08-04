@@ -263,3 +263,6 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+M3/4-metadata/.vscode/tasks.json
+M3/3-sdk/.vscode/launch.json
+M3/3-sdk/.vscode/tasks.json
