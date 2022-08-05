@@ -1,6 +1,6 @@
 # Pull existing Docker image from docker hub
 docker pull tekstac/aci-helloworld
-docker pull wernight/funbox  
+docker pull wernight/funbox
 docker pull nginx:latest
 
 
