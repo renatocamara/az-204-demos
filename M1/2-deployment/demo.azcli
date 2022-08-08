@@ -22,7 +22,7 @@ az webapp browse --name $webappname --resource-group $resourceGroup
 ################################
 az webapp deployment source config-zip --resource-group $resourceGroup --name $webappname --src webapp.zip
 
-az webapp browse --name $webappname --resource-group $resourceGroup 
+az webapp browse --name $webappname --resource-group $resourceGroup
 
 ################################
 #deploy web app from GitHub
