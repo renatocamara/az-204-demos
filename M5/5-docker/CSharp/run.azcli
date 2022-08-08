@@ -1,7 +1,7 @@
 #bash script
 
 #bring short name of your container from previous demo
-account=
+account=acrdemo26160
 
 # build image 
 docker build -t ninjacat-dotnet .
