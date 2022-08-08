@@ -5,7 +5,7 @@ webappname=mywebapp$RANDOM # generate a unique name
 appServicePlan="app-service-plan-$webappname"
 
 #create resource group
-az group create --name Demo-AZ204-M1 --location eastus
+az group create --name $resourceGroup --location eastus
 
 #create app service plan
 az appservice plan create --name $appServicePlan --resource-group $resourceGroup --sku FREE
