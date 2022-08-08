@@ -1,23 +1,28 @@
-#create resource group
-az group create --name Demo-AZ204-M01 --location eastus
+# Variable block
+location="eastus"
+resourceGroup="Demo-AZ204-M1"
+webappname=mywebapp$RANDOM # generate a unique name
+appServicePlan="app-service-plan-$webappname"
 
-account=web-$RANDOM
+#create resource group
+az group create --name Demo-AZ204-M1 --location eastus
 
 #create app service plan
-az appservice plan create --name $account-plan --resource-group Demo-AZ204-M01 --sku FREE
+az appservice plan create --name $appServicePlan --resource-group $resourceGroup --sku FREE
 
 #create web app
-az webapp create --name $account  --resource-group Demo-AZ204-M01 --plan $account-plan
+az webapp create --name $webappname --resource-group $resourceGroup --plan $appServicePlan
 
-az webapp browse --name $account  --resource-group Demo-AZ204-M01 
+# test web app
+az webapp browse --name $webappname --resource-group $resourceGroup 
 
 
 ################################
 #deploy web app from zip
 ################################
-az webapp deployment source config-zip --resource-group Demo-AZ204-M01 --name $account --src webapp.zip
+az webapp deployment source config-zip --resource-group $resourceGroup --name $webappname --src webapp.zip
 
-az webapp browse --name $account --resource-group Demo-AZ204-M01 
+az webapp browse --name $webappname --resource-group $resourceGroup 
 
 ################################
 #deploy web app from GitHub
@@ -27,7 +32,7 @@ az webapp browse --name $account --resource-group Demo-AZ204-M01
 gitrepo=https://github.com/renatocamara/secure-web-https.git
 
 # deploy code from a Git repository
-az webapp deployment source config --name $account --resource-group Demo-AZ204-M01 --repo-url $gitrepo --branch master
+az webapp deployment source config --name $webappname --resource-group $resourceGroup --repo-url $gitrepo --branch master
 
 # print out the FQDN for the Web App
-az webapp browse --name $account  --resource-group Demo-AZ204-M01 
+az webapp browse --name $webappname  --resource-group $resourceGroup

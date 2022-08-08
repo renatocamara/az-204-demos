@@ -1,6 +1,6 @@
 # Variable block
 location="eastus"
-resourceGroup="Demo-AZ204-M01"
+resourceGroup="Demo-AZ204-M1"
 webappname=mywebapp$RANDOM # generate a unique name
 appServicePlan="app-service-plan-$webappname"
 echo "Web-App-Name=""$webappname"
