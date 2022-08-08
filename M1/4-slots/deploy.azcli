@@ -1,38 +1,39 @@
-#bash script
+# Variable block
+location="eastus"
+resourceGroup="Demo-AZ204-M1-Slots"
+webappname=slot-$RANDOM # generate a unique name
+appServicePlan="app-service-plan-$webappname"
 
 #create resource group
-az group create -l eastus -n Demo-AZ204-Slots
-
-#webapp name
-account=slot-$RANDOM
+az group create -l eastus -n $resourceGroup
 
 #create app service plan
-az appservice plan create --name $account-plan --resource-group Demo-AZ204-Slots --sku S1 --is-linux 
+az appservice plan create --name $appServicePlan --resource-group $resourceGroup --sku S1 --is-linux 
 
 #create web app
-az webapp create --name $account  --resource-group Demo-AZ204-Slots --plan $account-plan --runtime "NODE:16-lts"
+az webapp create --name $webappname  --resource-group $resourceGroup --plan $appServicePlan --runtime "NODE:16-lts"
 
 #deploy
-az webapp deploy --name $account  --resource-group Demo-AZ204-Slots --type zip --src-path 'web-broken.zip' 
+az webapp deploy --name $webappname  --resource-group $resourceGroup --type zip --src-path 'web-broken.zip' 
 
 # test web app
-az webapp browse --name $account  --resource-group Demo-AZ204-Slots  # should be with "fix me"
+az webapp browse --name $webappname  --resource-group $resourceGroup  # should be with "fix me"
 
 # create stage slot
-az webapp deployment slot create --name $account --resource-group Demo-AZ204-Slots  --slot staging
+az webapp deployment slot create --name $webappname --resource-group $resourceGroup  --slot staging
 
 # deploy to slot from ZIP
-az webapp deployment source config-zip --name $account --resource-group Demo-AZ204-Slots --slot staging --src web-fixed.zip
+az webapp deployment source config-zip --name $webappname --resource-group $resourceGroup --slot staging --src web-fixed.zip
 
-az webapp browse --slot staging --name $account  --resource-group Demo-AZ204-Slots
+az webapp browse --slot staging --name $webappname  --resource-group $resourceGroup
 
 #swap slots
-az webapp deployment slot swap --name $account --resource-group Demo-AZ204-Slots --slot staging --action swap
+az webapp deployment slot swap --name $webappname --resource-group $resourceGroup --slot staging --action swap
 #https://slot-demo-staging.azurewebsites.net
 #https://slot-demo.azurewebsites.net
 
 #check the slot 
-az webapp browse --slot staging --name $account  --resource-group Demo-AZ204-Slots
+az webapp browse --slot staging --name $webappname  --resource-group $resourceGroup
 
 #check the main app 
-az webapp browse --name $account  --resource-group Demo-AZ204-Slots
+az webapp browse --name $webappname  --resource-group $resourceGroup
