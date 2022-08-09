@@ -1,30 +1,30 @@
 # Variable block
 location="eastus"
 resourceGroupName="Demo-AZ204-M5-containers"
-account=acrdemo$RANDOM #Geenrate unique name
+acrname=acrdemo$RANDOM #Generate unique name
 
 #Create resource group
 az group create --name $resourceGroupName --location $location
 
 # Create an ACR instance
-az acr create --resource-group $resourceGroupName --name $account --sku Basic
+az acr create --resource-group $resourceGroupName --name $acrname --sku Basic
 
 # Login to ACR
-az acr login --name $account
+az acr login --name $acrname
 
 #prep the image to push in the ACR
 #generate tag
-docker tag nginx $account.azurecr.io/my-nginx:v1
+docker tag nginx $acrname.azurecr.io/my-nginx:v1
 
 #push image
-docker push $account.azurecr.io/my-nginx:v1
+docker push $acrname.azurecr.io/my-nginx:v1
 
 # List container images
-az acr repository list --name $account --output table
+az acr repository list --name $acrname --output table
 
 # List the tags on the repository
-az acr repository show-tags --name $account --repository my-nginx --output table
+az acr repository show-tags --name $acrname --repository my-nginx --output table
 
 #pull the image from the ACR
-docker pull $account.azurecr.io/my-nginx:v1
+docker pull $acrname.azurecr.io/my-nginx:v1
 
