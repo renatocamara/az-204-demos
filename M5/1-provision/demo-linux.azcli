@@ -1,0 +1,16 @@
+# Variable block
+location="eastus"
+resourceGroupName="Demo-AZ204-M5-VM-class"
+
+#Create a resource group
+az group create --name $resourceGroupName --location $location
+
+#Create Linux virtual machine
+az vm create --resource-group $resourceGroupName --name linux-vm2 --image "UbuntuLTS" --public-ip-sku Standard --admin-username azureuser --admin-password "Demouser@123" --location $location --custom-data cloud-init.txt
+
+#Open port 80 for web traffic
+az vm open-port --port 80 --resource-group $resourceGroupName --name linux-vm2
+
+#get ip
+ip=$(az vm list-ip-addresses --resource-group $resourceGroupName --name linux-vm2 --query "[].virtualMachine.network.publicIpAddresses[0].ipAddress" --output tsv)
+echo "http://$ip"
