@@ -1,33 +1,38 @@
-#bash script
-
+# Variable block
+location="eastus"
+resourceGroupName="Demo-AZ204-M5-containers-class"
 #bring short name of your container from previous demo
-account=""  # from demo #4
+acrName="acrdemo29642"  # from demo #4
+aciName=ninjacat2
+aciDNS="ninjacat2"
+aciCPU=1
+aciMemory=1
+aciPort=9090
 
 #create RG for ACI
-az group create --name Demo-AZ204-containers --location eastus
+az group create --name $resourceGroupName --location $location
 
 #sign in
-az acr login --name $account
+az acr login --name $acrName
 
 # List container images
-az acr repository list --name $account --output table
+az acr repository list --name $acrName --output table
 
-# List the tags on the alex-heloworld repository
-az acr repository show-tags --name $account --repository ninjacat-nodejs --output table
+# List the tags on the repository
+az acr repository show-tags --name $acrName --repository ninjacat-nodejs --output table
 
-
+# The admin account is currently required for some scenarios to deploy an image from a container registry to certain Azure services. 
+# For example, the admin account is needed when you use the Azure portal to deploy a container image from a registry directly to 
+# Azure Container Instances or Azure Web Apps for Containers.
 # Enable admin user
-az acr update --name $account --admin-enabled true
+az acr update --name $acrName --admin-enabled true
 
 # Query for the password
-pass=$(az acr credential show --name $account --query "passwords[0].value" -o tsv)
+pass=$(az acr credential show --name $acrName --query "passwords[0].value" -o tsv)
 
 # Deploy container image
-az container create --resource-group Demo-AZ204-containers --name acr-ninjacat-node --image alexacrdemo.azurecr.io/ninjacat-nodejs:latest --cpu 1 --memory 1 --registry-username  $account --registry-password $pass  --dns-name-label catcontainer --ports 9090 
+az container create --resource-group $resourceGroupName --name $aciName --image ${acrName}.azurecr.io/ninjacat-nodejs:latest --cpu $aciCPU --memory $aciMemory --registry-username  $acrName --registry-password $pass  --dns-name-label $aciDNS --ports $aciPort
 
 # View container state
-ip=$(az container show --resource-group Demo-AZ204-containers --name acr-ninjacat-node --query ipAddress.ip -o tsv)
+ip=$(az container show --resource-group $resourceGroupName --name $aciName --query ipAddress.ip -o tsv)
 echo http://$ip:9090
-
-
-

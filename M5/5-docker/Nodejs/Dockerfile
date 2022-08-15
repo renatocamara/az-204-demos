@@ -8,6 +8,7 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY package*.json ./
 
+# This command installs a package, and any packages that it depends on.
 RUN npm install
 # If you are building your code for production
 # RUN npm ci --only=production

@@ -109,7 +109,45 @@
   - [CSharp](/M9/6-NHub/Demo-CSharp.md)
   - [Nodejs](/M9/6-NHub/Demo-Nodejs.md)
 
+
+## Module 10: Develop message-based solutions
+
+- Demo #1: Provision Azure Storage Queue by Azure CLI
+  - [AzureCLI](/M10/1-provision-q/demo.md)
+- Demo #2: Processing messages from the code
+  - [CSharp](/M10/2-sdk-q/demo.md)
+- Demo #3: Provision Azure Service Bus Queues and Topic by Azure CLI
+  - [AzureCLI](/M10/3-provision-sb/demo.md)
+- Demo #4: Send and receive messages from a Service Bus Queue
+  - [CSharp](/M10/4-sdk-sb/demo-simple.md)  - msg broker
+  - [CSharp](/M10/4-sdk-sb/demo-session.md) - session
+  - [CSharp](/M10/4-sdk-sb/demo-topic.md)   - topic
+
+## Module 11: Instrument solutions to support monitoring and logging
   
+- Demo #1: Exploring Azure Monitor
+  - [AzureCLI+Portal](/M11/1-monitor/Demo.md)
+
+- Demo #2: Integrate your code with Application Insights
+  - [CSharp](/M11/2-sdk/Demo.md)
+
+- Demo #3:  Troubleshooting with AI.
+  - [Portal](/M11/3-portal/Demo.md)
+
+
+## Module 12: Develop event-based solutions
+  
+- Demo #1: Connecting to Azure Cache for Redis
+  - [AzureCLI](/M12/1-provision-redis/Demo.md)
+
+- Demo #1: Azure Cache for Redis in Action
+  - [CSharp](/M12/2-sdk-redis/Demo-csharp.md) - Console App
+  - [CSharp](/M12/2-sdk-redis/Demo-session.md) - State Server
+  - [Nodejs](/M12/2-sdk-redis/Demo-nodejs.md) - Console App
+
+- Demo #3: Provision and test Azure CDN
+  - [AzureCLI](/M12/3-cdn/demo.md)
+
 
 # Retired content
 

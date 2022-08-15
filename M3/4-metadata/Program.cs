@@ -29,12 +29,12 @@ namespace DemoBlobProject
 
         static async Task Run()
         {
-            // Create a BlobServiceClient object which will be used to create a container
+            // Create a BlobServiceClient object which will be used to create a container client
             BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
 
             Console.WriteLine("Part 1: Creating customers");
             
-            // Create Container 
+            // Create Container Client 
             var container = await BuildContainer(blobServiceClient);
 
             //create a few orders to be stored as files.

@@ -1,11 +1,14 @@
 #bring short name of your container from previous demo
-account="acrdemo24014"
+account="acrdemo26160"
 
-# build image 
+# build image
+# The docker build command builds Docker images from a Dockerfile
 docker build -t ninjacat-nodejs .
 
+# Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
 docker tag ninjacat-nodejs $account.azurecr.io/ninjacat-nodejs:latest
 
+# Push an image or a repository to a registry
 docker push $account.azurecr.io/ninjacat-nodejs:latest
 
 # run image locally
