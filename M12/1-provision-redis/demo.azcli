@@ -1,16 +1,16 @@
-#bash
+# Variable block
+location="eastus"
+resourceGroup="Demo-AZ204-M12-Redis"
+redisname=azurecache$RANDOM  # to avoid name collisions generate unique name
 
 #create resource group
-az group create --location eastus2 --name Demo-AZ204-Redis
-
-# to avoid name collisions generate unique name for your account
-account=azurecache$RANDOM
+az group create --location $location --name $resourceGroup
 
 #create Basic SKU instance
-az redis create --location eastus2 --name $account --resource-group Demo-AZ204-Redis --sku Basic --vm-size C0
+az redis create --location $location --name $redisname --resource-group $resourceGroup --sku Basic --vm-size C0
 
 #retrieve key and address 
-$key=$(az redis list-keys --name $account --resource-group Demo-AZ204-Redis --query primaryKey -o tsv)
+$key=$(az redis list-keys --name $redisname --resource-group $resourceGroup --query primaryKey -o tsv)
 echo $key
-echo $account.redis.cache.windows.net
+echo $redisname.redis.cache.windows.net
 
