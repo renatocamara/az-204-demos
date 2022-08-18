@@ -1,37 +1,37 @@
-#bash script
+# Variable block
+resourceGroup="Demo-AZ204-M12-CDN"
+stgaccountname=cdndemo$RANDOM
 
 # create resource group
-az group create --name Demo-AZ204-CDN --location eastus2
-
-account=cdndemo$RANDOM
+az group create --name $resourceGroup --location eastus2
 
 #create account 
-az storage account create --name $account --resource-group Demo-AZ204-CDN --location koreasouth
+az storage account create --name $stgaccountname --resource-group $resourceGroup --location koreasouth
 
 #create container
-az storage container create --name demoimg --public-access container --account-name $account
+az storage container create --name demoimg --public-access container --account-name $stgaccountname
 
 #get key
-key=$(az storage account keys list  --account-name $account --query "[0].{Name:value}" -o tsv)
+key=$(az storage account keys list  --account-name $stgaccountname --query "[0].{Name:value}" -o tsv)
+echo $key
 
 #upload file
-az storage blob upload --name img.jpg -f img.jpg -c demoimg --account-name $account --account-key $key
+az storage blob upload --name img.jpg -f img.jpg -c demoimg --account-name $stgaccountname --account-key $key
 
 # create new CDN account
-az cdn profile create --name DemoProfile --resource-group Demo-AZ204-CDN --sku Standard_Akamai
+az cdn profile create --name DemoProfile --resource-group $resourceGroup --sku Standard_Akamai
 
 # Create Endpoint for 
-az cdn endpoint create --name $account --origin $account.blob.core.windows.net --origin-host-header $account.blob.core.windows.net --origin-path '//demoimg' --profile-name DemoProfile --resource-group Demo-AZ204-CDN
+az cdn endpoint create --name $stgaccountname --origin $stgaccountname.blob.core.windows.net --origin-host-header $stgaccountname.blob.core.windows.net --origin-path '//demoimg' --profile-name DemoProfile --resource-group $resourceGroup
 
-bloburl=https://$account.blob.core.windows.net/demoimg/img.jpg
-cdnurl=https://$account.blob.core.windows.net/demoimg/img.jpg
+bloburl=https://$stgaccountname.blob.core.windows.net/demoimg/img.jpg
+cdnurl=https://$stgaccountname.blob.core.windows.net/demoimg/img.jpg
 
 echo $bloburl
 
-#load file directly from org
+#load file directly from origin
 curl $bloburl -o test.jpg
 
 #load file from CDN
+#When you testing download speed you might need to run several tests from CDN because the first request will wait to downloading from origin.
 curl $cdnurl -o test.jpg
-
-
