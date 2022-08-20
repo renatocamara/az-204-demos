@@ -38,7 +38,7 @@ namespace TheCloudShopWebState
                     throw new Exception("Redis instance is not configured in appsettings.json ");
 
                 options.Configuration = _config["AzureRedis"];  //init session from connection string
-                options.InstanceName = "DemoInstanse";
+                options.InstanceName = "DemoInstanse-";
             });
 
             services.AddRazorPages();

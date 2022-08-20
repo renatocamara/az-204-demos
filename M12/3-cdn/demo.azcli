@@ -1,5 +1,5 @@
 # Variable block
-resourceGroup="Demo-AZ204-M12-CDN"
+resourceGroup="Demo-AZ204-M12-CDN-classroom"
 stgaccountname=cdndemo$RANDOM
 
 # create resource group
@@ -25,9 +25,10 @@ az cdn profile create --name DemoProfile --resource-group $resourceGroup --sku S
 az cdn endpoint create --name $stgaccountname --origin $stgaccountname.blob.core.windows.net --origin-host-header $stgaccountname.blob.core.windows.net --origin-path '//demoimg' --profile-name DemoProfile --resource-group $resourceGroup
 
 bloburl=https://$stgaccountname.blob.core.windows.net/demoimg/img.jpg
-cdnurl=https://$stgaccountname.blob.core.windows.net/demoimg/img.jpg
+cdnurl=https://$stgaccountname.azureedge.net/img.jpg
 
 echo $bloburl
+echo $cdnurl
 
 #load file directly from origin
 curl $bloburl -o test.jpg
