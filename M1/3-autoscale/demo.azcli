@@ -1,24 +1,28 @@
-#create resourece group
-az group create --name Demo-AZ204-M01 --location eastus
+# Variable block
+location="eastus"
+resourceGroup="Demo-AZ204-M1"
+webappname=autoscale-$RANDOM # generate a unique name
+appServicePlan="app-service-plan-$webappname"
 
-account=autoscale-$RANDOM
+#create resourece group
+az group create --name $resourceGroup --location $location
 
 #create app service plan
-az appservice plan create --name $account-plan --resource-group Demo-AZ204-M01 --sku S1 --is-linux $true
+az appservice plan create --name $appServicePlan --resource-group $resourceGroup --sku S1 --is-linux $true
 
 #create web app
-az webapp create --name $account  --resource-group Demo-AZ204-M01 --plan $account-plan --runtime "PYTHON:3.7"
+az webapp create --name $webappname --resource-group $resourceGroup --plan $appServicePlan --runtime "PYTHON:3.7"
 
 # set up autoscale
-az monitor autoscale create --name $account-plan --resource-type "Microsoft.Web/serverfarms" -g Demo-AZ204-M01 --resource $account-plan --min-count 1 --max-count 5 --count 1 
+az monitor autoscale create --name $appServicePlan --resource-type "Microsoft.Web/serverfarms" -g $resourceGroup --resource $appServicePlan --min-count 1 --max-count 5 --count 1
 
-az monitor autoscale rule create -g Demo-AZ204-M01 --autoscale-name $account-plan --scale out 1 --condition "CpuPercentage > 50 avg 1m"
-az monitor autoscale rule create -g Demo-AZ204-M01 --autoscale-name $account-plan --scale in 1 --condition "CpuPercentage < 25 avg 1m"
+az monitor autoscale rule create -g $resourceGroup --autoscale-name $appServicePlan --scale out 1 --condition "CpuPercentage > 50 avg 1m"
+az monitor autoscale rule create -g $resourceGroup --autoscale-name $appServicePlan --scale in 1 --condition "CpuPercentage < 25 avg 1m"
 
+# command to create pythonApp.zip
+# inside pyWebApp dir, run:zip -r ../pythonApp.zip . -x ".azure/*" --exclude .gitignore
 #deploy web app from zip
-az webapp deployment source config-zip --resource-group Demo-AZ204-M01 --name $account --src src.zip
+az webapp deployment source config-zip --resource-group $resourceGroup --name $webappname --src pythonApp.zip
 
 ## observing results
-az webapp browse --name $account --resource-group Demo-AZ204-M01 
-
-
+az webapp browse --name $webappname --resource-group $resourceGroup
