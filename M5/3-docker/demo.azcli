@@ -5,6 +5,8 @@ docker pull nginx:latest
 
 
 #run simple web site locally
+# -d - Run container in background and print container ID
+# -p - Publish a container's port(s) to the host
 docker run -d -p 8081:80 nginx:latest
 docker run -d -p 8082:80 tekstac/aci-helloworld
 
@@ -13,6 +15,8 @@ http://localhost:8081
 http://localhost:8082
 
 #send cat to the space
+# --rm - Automatically remove the container when it exits
+# -it -  interactive mode (hence -it flag) that allows you to interact with /bin/bash of the container. 
 docker run --rm -it wernight/funbox nyancat
 
 #watch underwater live in aquarium
