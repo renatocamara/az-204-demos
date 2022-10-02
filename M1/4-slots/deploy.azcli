@@ -1,6 +1,6 @@
 # Variable block
 location="eastus"
-resourceGroup="Demo-AZ204-M1-Slots"
+resourceGroup="Demo-AZ204-M1"
 webappname=slot-$RANDOM # generate a unique name
 appServicePlan="app-service-plan-$webappname"
 
