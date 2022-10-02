@@ -19,9 +19,10 @@ az monitor autoscale create --name $appServicePlan --resource-type "Microsoft.We
 az monitor autoscale rule create -g $resourceGroup --autoscale-name $appServicePlan --scale out 1 --condition "CpuPercentage > 50 avg 1m"
 az monitor autoscale rule create -g $resourceGroup --autoscale-name $appServicePlan --scale in 1 --condition "CpuPercentage < 25 avg 1m"
 
+# run python app locally, inside pyWebApp dir, run:FLASK_APP=application.py flask run
 # command to create pythonApp.zip
 # inside pyWebApp dir, run:zip -r ../pythonApp.zip . -x ".azure/*" --exclude .gitignore
-#deploy web app from zip
+# deploy web app from zip
 az webapp deployment source config-zip --resource-group $resourceGroup --name $webappname --src pythonApp.zip
 
 ## observing results
