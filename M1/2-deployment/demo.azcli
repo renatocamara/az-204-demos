@@ -16,9 +16,14 @@ az webapp create --name $webappname --resource-group $resourceGroup --plan $appS
 # test web app
 az webapp browse --name $webappname --resource-group $resourceGroup 
 
-
 ################################
-#deploy web app from zip
+# deploy web app from zip
+# How to create webapp.zip file?
+# commands:
+# 1) on dir az-204-demos\M1\2-deployment\src> dotnet publish
+# 2) cd src/bin/Debug/netcoreapp6.0/publish/
+# 3) zip -r ../../../../../webapp.zip .
+# 4) cd ../../../../../
 ################################
 az webapp deployment source config-zip --resource-group $resourceGroup --name $webappname --src webapp.zip
 
