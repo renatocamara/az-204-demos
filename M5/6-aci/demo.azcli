@@ -1,10 +1,10 @@
 # Variable block
 location="eastus"
-resourceGroupName="Demo-AZ204-M5-containers-class"
+resourceGroupName="Demo-AZ204-M5-containers-classroom"
 #bring short name of your container from previous demo
-acrName="acrdemo29642"  # from demo #4
-aciName=ninjacat2
-aciDNS="ninjacat2"
+acrName="acrdemo8713"  # from demo #4
+aciName=ninjacat3
+aciDNS="ninjacat3"
 aciCPU=1
 aciMemory=1
 aciPort=9090

@@ -1,5 +1,5 @@
 #bring short name of your container from previous demo
-account="acrdemo26160"
+account=acrdemo8713
 
 # build image
 # The docker build command builds Docker images from a Dockerfile
