@@ -13,4 +13,3 @@ az redis create --location $location --name $redisname --resource-group $resourc
 $key=$(az redis list-keys --name $redisname --resource-group $resourceGroup --query primaryKey -o tsv)
 echo $key
 echo $redisname.redis.cache.windows.net
-

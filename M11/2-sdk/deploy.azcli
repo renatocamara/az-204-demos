@@ -1,9 +1,11 @@
-#bash script
+# Variable block
+location="eastus"
+resourceGroup="Demo-AZ204-M11-AI"
 
 #must be updated wiht name of your Web App with App Inisights
-appName=''  
+appName=''
 
-# build and publish binaries to the folder 'publihs'. requred Dot Net Core 5 installed
+# build and publish binaries to the folder 'publish'. required Dot Net Core 5 installed
 dotnet publish 'DemoProject' -o 'publish'
 
 
@@ -14,7 +16,7 @@ Compress-Archive -Path publish\* -DestinationPath DemoProject.zip -force
 #alternative use Send to Zip from windows file explorer
 
 #deploy binaries to the Azure Web App
-az webapp deploy --resource-group Demo-AZ204-AI --name $appName --type zip --src-path 'DemoProject.zip'
+az webapp deploy --resource-group $resourceGroup --name $appName --type zip --src-path 'DemoProject.zip'
 
 #check the webapp
-az webapp browse --name $appName --resource-group Demo-AZ204-AI 
+az webapp browse --name $appName --resource-group $resourceGroup

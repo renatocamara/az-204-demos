@@ -1,20 +1,20 @@
-#bash script
-
-#web app name
-appName=ai-demo$RANDOM 
+# Variable block
+location="eastus"
+resourceGroup="Demo-AZ204-M11-AI-classroom"
+appName=ai-demo$RANDOM # generate a unique name
 
 # create a resource group
-az group create --location eastus --name Demo-AZ204-AI
+az group create --location eastus --name $resourceGroup
 
 # create an App Service plan
-az appservice plan create --name $appName --resource-group Demo-AZ204-AI --sku FREE
+az appservice plan create --name $appName --resource-group $resourceGroup --sku FREE
 
 # create a Web App
-az webapp create --name $appName --resource-group Demo-AZ204-AI --plan $appName
+az webapp create --name $appName --resource-group $resourceGroup --plan $appName
 
 # setup loging
-az webapp log config --application-logging filesystem --detailed-error-messages true --failed-request-tracing true --level information --name $appName --resource-group Demo-AZ204-AI --web-server-logging filesystem
+az webapp log config --application-logging filesystem --detailed-error-messages true --failed-request-tracing true --level information --name $appName --resource-group $resourceGroup --web-server-logging filesystem
 
 
 #open web app
-az webapp browse --name $appName --resource-group Demo-AZ204-AI --
+az webapp browse --name $appName --resource-group $resourceGroup

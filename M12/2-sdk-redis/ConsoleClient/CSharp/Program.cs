@@ -23,7 +23,7 @@ namespace RadisDemo
 
                 // Connection refers to a property that returns a ConnectionMultiplexer
                 // as shown in the previous example.
-                var cache = radis.GetDatabase();
+                IDatabase cache = radis.GetDatabase();
 
                 // Perform cache operations using the cache object...
 

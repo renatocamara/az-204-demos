@@ -1,5 +1,5 @@
 # Variable block
-resourceGroup="Demo-AZ204-M12-CDN-classroom"
+resourceGroup="Demo-AZ204-M12-CDN"
 stgaccountname=cdndemo$RANDOM
 
 # create resource group
