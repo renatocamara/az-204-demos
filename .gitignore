@@ -266,3 +266,7 @@ __pycache__/
 M3/4-metadata/.vscode/tasks.json
 M3/3-sdk/.vscode/launch.json
 M3/3-sdk/.vscode/tasks.json
+M5/1-provision/keyfromclass
+M5/1-provision/keyfromclass.pub
+M5/1-provision/tempssh
+M5/1-provision/tempssh.pub
