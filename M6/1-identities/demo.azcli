@@ -3,7 +3,6 @@ location="eastus"
 resourceGroupName="Demo-AZ204-M6-AAD"
 randomIdentifier=$RANDOM
 servicePrincipalName="az204-sp-$randomIdentifier"
-roleName="Contributor"
 
 #get subscription id
 subscriptionID=$(az account show --query id --output tsv)
@@ -18,8 +17,15 @@ az group create --name $resourceGroupName --location $location
 #id can be verified on https://docs.microsoft.com/en-us/graph/permissions-reference#all-permissions-and-ids
 az ad app create --display-name $servicePrincipalName --is-fallback-public-client --required-resource-accesses manifest.json
 
-#retrive App ID
-AppID=$(az ad app list --display-name $servicePrincipalName --query [0].id --output tsv)
+az ad app list --display-name $servicePrincipalName --output table
 
-#output contains TenantID, and password you need for next demo
-az ad app credential reset --id $AppID --append
+#retrive App ID
+AppID=$(az ad app list --display-name $servicePrincipalName --query [0].AppId --output tsv)
+echo "Application ID" {$AppID}
+
+#retrive Object ID
+ObjID=$(az ad app list --display-name $servicePrincipalName --query [0].id --output tsv)
+echo "Object ID" {$ObjID}
+
+#output contains appId, password and tenant that you need for next demo
+az ad app credential reset --id $ObjID --append
