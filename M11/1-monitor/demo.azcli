@@ -1,13 +1,13 @@
 # Variable block
 location="eastus"
-resourceGroup="Demo-AZ204-M11-AI-classroom"
+resourceGroup="Demo-AZ104-M11-classroom"
 appName=ai-demo$RANDOM # generate a unique name
 
 # create a resource group
 az group create --location eastus --name $resourceGroup
 
 # create an App Service plan
-az appservice plan create --name $appName --resource-group $resourceGroup --sku FREE
+az appservice plan create --name $appName --resource-group $resourceGroup --sku P1V2
 
 # create a Web App
 az webapp create --name $appName --resource-group $resourceGroup --plan $appName
