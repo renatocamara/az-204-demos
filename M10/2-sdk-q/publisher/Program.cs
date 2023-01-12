@@ -26,7 +26,7 @@ namespace publisher
 
             var client = CreateQueueClient(); //build client
 
-            // sending 30 messages 
+            // sending 10 messages 
             for( var i=0; i< 10; i++ )
             {
                string msg = JsonSerializer.Serialize( new TheMessage(){ MsgID = $"{i}", Info = $"Simple messaging #{i}"});
