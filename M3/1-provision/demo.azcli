@@ -5,7 +5,7 @@ resourceGroup="Demo-AZ204-M2-Blobs"
 stgaccountname=azureblobs$RANDOM
 
 #create resource group
-az group create -l eastus -n $resourceGroup
+az group create -l $location -n $resourceGroup
 
 #create storage account 
 az storage account create --name $stgaccountname --resource-group $resourceGroup

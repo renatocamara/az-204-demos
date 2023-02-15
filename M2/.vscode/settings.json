@@ -1,0 +1,13 @@
+{
+    "azureFunctions.projectSubpath": "3-durable\\Nodejs\\ChainFunction",
+    "files.exclude": {
+        "obj": true,
+        "bin": true
+    },
+    "azureFunctions.deploySubpath": "3-durable\\Nodejs\\ChainFunction",
+    "azureFunctions.postDeployTask": "npm install (functions)",
+    "azureFunctions.projectLanguage": "JavaScript",
+    "azureFunctions.projectRuntime": "~4",
+    "debug.internalConsoleOptions": "neverOpen",
+    "azureFunctions.preDeployTask": "npm prune (functions)"
+}
