@@ -14,6 +14,7 @@ RUN npm install
 # RUN npm ci --only=production
 
 # Bundle app source
+# copy files and directories inside a Docker Container from your Local machine
 COPY . .
 
 EXPOSE 9090
