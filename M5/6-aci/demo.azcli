@@ -1,10 +1,10 @@
 # Variable block
 location="eastus"
-resourceGroupName="Demo-AZ204-M5-containers-classroom"
+resourceGroupName="Demo-AZ204-M5-containers"
 #bring short name of your container from previous demo
-acrName="acrdemo8713"  # from demo #4
-aciName=ninjacat3
-aciDNS="ninjacat3"
+acrName=""  # from demo #4
+aciName=ninjacat
+aciDNS="ninjacat"
 aciCPU=1
 aciMemory=1
 aciPort=9090
@@ -22,10 +22,9 @@ az acr repository list --name $acrName --output table
 az acr repository show-tags --name $acrName --repository ninjacat-nodejs --output table
 
 # The admin account is currently required for some scenarios to deploy an image from a container registry to certain Azure services. 
-# For example, the admin account is needed when you use the Azure portal to deploy a container image from a registry directly to 
-# Azure Container Instances or Azure Web Apps for Containers.
+# https://learn.microsoft.com/en-us/azure/container-registry/container-registry-authentication?tabs=azure-cli#admin-account
 # Enable admin user
-az acr update --name $acrName --admin-enabled true
+# az acr update --name $acrName --admin-enabled true
 
 # Query for the password
 pass=$(az acr credential show --name $acrName --query "passwords[0].value" -o tsv)

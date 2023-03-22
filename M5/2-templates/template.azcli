@@ -6,7 +6,7 @@ resourceGroupName="Demo-AZ204-M5-ARM"
 az group create --name $resourceGroupName --location $location
 
 #start template deployment
-az group deployment create --name "newdeployment" --resource-group $resourceGroupName --template-file "template.json" --parameters "parameters.json"
+az deployment group create --name "newdeployment" --resource-group $resourceGroupName --template-file "template.json" --parameters "parameters.json"
 
 #pull the accounts from the RG
 az storage account list --resource-group $resourceGroupName
