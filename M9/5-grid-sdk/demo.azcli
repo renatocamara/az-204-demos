@@ -1,41 +1,58 @@
-#bash script
+# Variable block
+let rNum=$RANDOM*$RANDOM
+myLocation="eastus"
+myResourceGroup="Demo-AZ204-evgrid-rg"
+myTopicName="az204-egtopic-${rNum}"
+mySiteName="az204-egsite-${rNum}"
+mySiteURL="https://${mySiteName}.azurewebsites.net"
 
 # create resource group
-az group create -l eastus -n Demo-AZ204-EH
+az group create --name $myResourceGroup --location $myLocation
 
-# create topic for custom events
-az eventgrid topic create --name custom-events --resource-group Demo-AZ204-EH -l eastus
+# Enable an Event Grid resource provider
+az provider register --namespace Microsoft.EventGrid
+# To check the status run the following command
+az provider show --namespace Microsoft.EventGrid --query "registrationState"
 
-# show endpoint for submitting custom events
-echo 'your endpoint:'
-az eventgrid topic show --name custom-events --resource-group Demo-AZ204-EH --query "endpoint" -o tsv
-
-# retrieve access key for event publisher
-echo 'your access key:'
-az eventgrid topic key list --name custom-events --resource-group Demo-AZ204-EH --query "key1" -o tsv
-
-# generate name for Event Grid Viewer
-sitename=handler$RANDOM
+# create a custom topic
+az eventgrid topic create --name $myTopicName --resource-group $myResourceGroup --location $myLocation
 
 # deploy Event Grid Viewer
-az deployment group create --resource-group Demo-AZ204-EH --template-uri "https://raw.githubusercontent.com/Azure-Samples/azure-event-grid-viewer/master/azuredeploy.json" --parameters siteName=$sitename hostingPlanName=viewerhost
+az deployment group create \
+    --resource-group $myResourceGroup \
+    --template-uri "https://raw.githubusercontent.com/Azure-Samples/azure-event-grid-viewer/main/azuredeploy.json" \
+    --parameters siteName=$mySiteName hostingPlanName=viewerhost
 
-# pull the endpoint for Event Grid Viewer
-endpoint=https://$sitename.azurewebsites.net/api/updates
+# subscribe to a custom topic
+endpoint="${mySiteURL}/api/updates"
+subId=$(az account show --subscription "" | jq -r '.id')
+echo $endpoint
+echo $subId
 
-# pull azure subscription id
-subid=$(az account show --query id -o tsv)
-
-# create a subscription for Event Grid Viewer
-# this command works better in CloudShell, but variables need to be defined 
-az eventgrid event-subscription create --source-resource-id "/subscriptions/$subid/resourceGroups/Demo-AZ204-EH/providers/Microsoft.EventGrid/topics/custom-events" --name custom-handler --endpoint $endpoint
+az eventgrid event-subscription create \
+    --source-resource-id "/subscriptions/$subId/resourceGroups/$myResourceGroup/providers/Microsoft.EventGrid/topics/$myTopicName" \
+    --name az204ViewerSub \
+    --endpoint $endpoint
 
 ###################################################################
-##  START PUBLISHER publisher.exe FROM CURRENT FOLDER            ##
+##  START PUBLISHER publisher.exe FROM PUBLISHER FOLDER          ##
 ###################################################################
+
+# Retrieve URL and key for the custom topic.
+topicEndpoint=$(az eventgrid topic show --name $myTopicName --resource-group $myResourceGroup --query "endpoint" -o tsv)
+key=$(az eventgrid topic key list --name $myTopicName --resource-group $myResourceGroup --query "key1" -o tsv)
+echo $topicEndpoint
+echo $key
+
+# Create event data to send. Typically, an application or Azure service would send the event data, 
+# we're creating data for the purposes of the exercise.
+event='[ {"id": "'"$RANDOM"'", "eventType": "recordInserted", "subject": "myapp/vehicles/motorcycles", "eventTime": "'`date +%Y-%m-%dT%H:%M:%S%z`'", "data":{ "make": "Contoso", "model": "Monster"},"dataVersion": "1.0"} ]'
+
+# Use curl to send the event to the topic.
+curl -X POST -H "aeg-sas-key: $key" -d "$event" $topicEndpoint
 
 # observe the events on Event Grid Viewer
-az webapp browse --name $sitename --resource-group Demo-AZ204-EH
+az webapp browse --name $mySiteName --resource-group $myResourceGroup
 
 # cleanup 
-# all resource group Demo-AZ204-EH, EventHubDemo-RG and EventGridMonitoring can be deleted
+az group delete --name $myResourceGroup --no-wait
