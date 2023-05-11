@@ -14,21 +14,22 @@ az provider register --namespace Microsoft.EventGrid
 # To check the status run the following command
 az provider show --namespace Microsoft.EventGrid --query "registrationState"
 
-# create a custom topic
+# Create a custom topic
 az eventgrid topic create --name $myTopicName --resource-group $myResourceGroup --location $myLocation
 
-# deploy Event Grid Viewer
+# Create a message endpoint
 az deployment group create \
     --resource-group $myResourceGroup \
     --template-uri "https://raw.githubusercontent.com/Azure-Samples/azure-event-grid-viewer/main/azuredeploy.json" \
     --parameters siteName=$mySiteName hostingPlanName=viewerhost
 
-# subscribe to a custom topic
+# variables
 endpoint="${mySiteURL}/api/updates"
 subId=$(az account show --subscription "" | jq -r '.id')
 echo $endpoint
 echo $subId
 
+# Subscribe to a custom topic
 az eventgrid event-subscription create \
     --source-resource-id "/subscriptions/$subId/resourceGroups/$myResourceGroup/providers/Microsoft.EventGrid/topics/$myTopicName" \
     --name az204ViewerSub \
@@ -46,10 +47,12 @@ echo $key
 
 # Create event data to send. Typically, an application or Azure service would send the event data, 
 # we're creating data for the purposes of the exercise.
-event='[ {"id": "'"$RANDOM"'", "eventType": "recordInserted", "subject": "myapp/vehicles/motorcycles", "eventTime": "'`date +%Y-%m-%dT%H:%M:%S%z`'", "data":{ "make": "Contoso", "model": "Monster"},"dataVersion": "1.0"} ]'
+event01='[ {"id": "'"$RANDOM"'", "eventType": "recordInserted", "subject": "myapp/vehicles/motorcycles", "eventTime": "'`date +%Y-%m-%dT%H:%M:%S%z`'", "data":{ "make": "Harley-Davidson", "model": "Nightster"},"dataVersion": "1.0"} ]'
+event02='[ {"id": "'"$RANDOM"'", "eventType": "recordInserted", "subject": "myapp/vehicles", "eventTime": "'`date +%Y-%m-%dT%H:%M:%S%z`'", "data":{ "make": "Tesla", "model": "S", "acceleration": "3.1s/0-60mph", "topspeed": "149"},"dataVersion": "1.0"} ]'
 
 # Use curl to send the event to the topic.
-curl -X POST -H "aeg-sas-key: $key" -d "$event" $topicEndpoint
+curl -X POST -H "aeg-sas-key: $key" -d "$event01" $topicEndpoint
+curl -X POST -H "aeg-sas-key: $key" -d "$event02" $topicEndpoint
 
 # observe the events on Event Grid Viewer
 az webapp browse --name $mySiteName --resource-group $myResourceGroup
