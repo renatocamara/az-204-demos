@@ -8,7 +8,7 @@ echo $appName
 az group create --location eastus --name $resourceGroup
 
 # create an App Service plan
-az appservice plan create --name $appName --resource-group $resourceGroup --sku FREE
+az appservice plan create --name $appName --resource-group $resourceGroup --sku S1
 
 # create a Web App
 az webapp create --name $appName --resource-group $resourceGroup --plan $appName
