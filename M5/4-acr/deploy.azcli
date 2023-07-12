@@ -9,22 +9,19 @@ az group create --name $resourceGroupName --location $location
 # Create an ACR instance
 az acr create --resource-group $resourceGroupName --name $acrname --sku Basic
 
-# Login to ACR
-az acr login --name $acrname
+# Creating the Dockerfile
+echo FROM mcr.microsoft.com/hello-world > Dockerfile
 
-#prep the image to push in the ACR
-#generate tag
-docker tag nginx $acrname.azurecr.io/my-nginx:v1
-
-#push image
-docker push $acrname.azurecr.io/my-nginx:v1
+# Build the image and push to registry
+az acr build --image sample/hello-world:v1  --registry $acrname --file Dockerfile .
 
 # List container images
 az acr repository list --name $acrname --output table
 
 # List the tags on the repository
-az acr repository show-tags --name $acrname --repository my-nginx --output table
+az acr repository show-tags --name $acrname --repository sample/hello-world --output table
 
-#pull the image from the ACR
-docker pull $acrname.azurecr.io/my-nginx:v1
+# Run the sample/hello-world:v1 container image from the container registry
+az acr run --registry $acrname --cmd '{$acrname}.azurecr.io/sample/hello-world:v1' /dev/null
 
+az group delete --name Demo-AZ204-M5-containers-classroom --no-wait

@@ -1,10 +1,8 @@
 # Variable block
-myAppContEnv="ninja-env3"
+myAppContEnv="helloworld-env"
 myRG="az204-appcont-rg"
 myLocation="eastus"
 myAppContEnv=az204-env-$RANDOM
-acrName=acrdemo32407
-myAppName=ninjacat3
 
 #create RG for ACA
 az group create --name $myRG --location $myLocation
@@ -12,11 +10,9 @@ az group create --name $myRG --location $myLocation
 # Create an environment
 az containerapp env create --name $myAppContEnv --resource-group $myRG --location $myLocation
 
-az acr login --name $acrName
-
 # Create a container app
 az containerapp create \
-    --name helloworld2 \
+    --name helloworld \
     --resource-group $myRG \
     --environment $myAppContEnv \
     --image mcr.microsoft.com/azuredocs/containerapps-helloworld:latest \
