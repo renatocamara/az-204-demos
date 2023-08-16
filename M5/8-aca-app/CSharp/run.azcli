@@ -1,0 +1,23 @@
+#bash script
+
+#bring short name of your container from previous demo
+account=acrdemo26995
+
+# build image 
+docker build -t ninjacat-dotnet .
+
+docker tag ninjacat-dotnet $account.azurecr.io/ninjacat-dotnet:latest
+
+az acr login --name $account
+
+docker push $account.azurecr.io/ninjacat-dotnet:latest
+
+# run image locally
+docker run -p 49161:80 -d ninjacat-dotnet
+
+# visit http://localhost:49161/
+
+# build image 
+docker pull $account.azurecr.io/ninjacat-dotnet:latest
+
+

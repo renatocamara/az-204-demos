@@ -1,0 +1,73 @@
+# Variable block
+location="eastus"
+resourceGroup="az104-09-rg"
+
+#Create resource group
+az group create --name $resourceGroup --location "$location"
+
+#Create AKS cluster
+#az aks create --resource-group $resourceGroup --name mycluster --node-count 1 --enable-addons monitoring --generate-ssh-keys
+az aks create --resource-group $resourceGroup --name mycluster --node-count 1 --generate-ssh-keys
+
+# Install kubectl command line client locally
+az aks install-cli
+
+# Get credentials
+az aks get-credentials --resource-group $resourceGroup --name mycluster
+
+# Get a list of cluster nodes
+kubectl get nodes -o wide
+
+# Run the application (cd in the folder)
+kubectl apply -f nginx.yaml
+kubectl delete -f nginx.yaml
+#kubectl apply -f https://git.io/vPieo 
+kubectl get pods
+
+kubectl apply -f azure-vote.yaml
+
+# start a single instance of nginx
+kubectl create deployment nginx --image=nginx
+
+# delete azure-vote application
+kubectl delete -f azure-vote.yaml
+
+# View pods related to this deployment
+kubectl get pods -l app=nginx
+
+kubectl get pods
+
+# Monitor progress of the deploymentc
+kubectl get service kubernetes
+
+kubectl delete service nginx
+
+# Make the NGINX container accessible via the internet
+kubectl create service nodeport nginx --tcp=80:80
+
+# Get current services
+kubectl get svc
+
+# monitor page from container nginx
+kubectl run curl --image=radial/busyboxplus:curl -i --tty
+curl -k http://10.0.221.8    #must be address of NodePort
+#exit
+
+#clean up
+#kubectl config delete-cluster mycluster
+
+#hpa - Horizontal Pod Autoscaler
+kubectl get hpa
+kubectl autoscale deployment nginx --cpu-percent=2 --min=3 --max=10
+kubectl delete hpa nginx
+
+
+# List Nodes
+kubectl get nodes
+kubectl get nodes -o wide
+
+# Cluster Info
+kubectl cluster-info
+
+# kubectl Config Current Context
+kubectl config current-context
