@@ -1,7 +1,6 @@
-﻿// See https://aka.ms/new-console-template for more information
-using Microsoft.Azure.Cosmos;
+﻿using Microsoft.Azure.Cosmos;
 
-Console.WriteLine("Starting Cosmos DB Demo");
+Console.WriteLine("Cosmos DB Example");
 
 var uri = "YOUR_URI";
 var key = "YOUR_KEY";
@@ -19,14 +18,18 @@ var client = new CosmosClient(
 var database = await client.CreateDatabaseIfNotExistsAsync("hr");
 var container = (await database.Database.CreateContainerIfNotExistsAsync("employees", "/id")).Container;
 
+// Create an employee
 var newEmployee = new Employee() {
-    Id = "1004",
-    FirstName = "Grace",
-    LastName = "Hopper",
-    Salary = 120000
+    Id = Guid.NewGuid().ToString(),
+    FirstName = "John",
+    LastName = "Doe",
+    Department = "Sales",
+    Salary = 300000
 };
 
-await container.CreateItemAsync(newEmployee, new PartitionKey(newEmployee.Id));
+var response = await container.CreateItemAsync(newEmployee, new PartitionKey(newEmployee.Id));
+
+Console.WriteLine($"Status code: {response.StatusCode}");
 
 var query = new QueryDefinition("SELECT * FROM employee e");
 
@@ -37,7 +40,7 @@ while (iterator.HasMoreResults)
     var results = await iterator.ReadNextAsync();
     foreach (var employee in results)
     {
-        Console.WriteLine($"{employee.FirstName} {employee.LastName}: {employee.Salary}");
+        Console.WriteLine($"{employee.FirstName} {employee.LastName} - {employee.Department} - {employee.Salary}");
     }
 }
 

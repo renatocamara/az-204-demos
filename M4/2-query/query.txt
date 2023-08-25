@@ -18,5 +18,3 @@ JOIN memeber IN m.Crew.Members
 SELECT m.id,m["Start of mission"]["Launch site"]
 FROM Missions m
 WHERE udf.Match(m["Start of mission"]["Launch site"],"39[AB]")
-
-
