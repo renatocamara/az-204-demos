@@ -7,7 +7,7 @@ namespace Sender
     class Program
     {
         static string ConnectionString = "<your connection string>";
-        static string HubName = "nhubalex";
+        static string HubName = "<hub name>";
         static void Main(string[] args)
         {
             Send().Wait();
