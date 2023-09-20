@@ -6,11 +6,7 @@ Console.WriteLine("Starging MSAL demo!");
 var tenantId = "YOUR_TENANT_ID";
 string clientId = "YOUR_CLIENT_ID";
 
-List<string> scopes = new List<string>
-{ 
-    "user.read",
-    "https://management.azure.com/user_impersonation"
-};
+string[] scopes = { "user.read" };
 
 var app = PublicClientApplicationBuilder
     .Create(clientId)
