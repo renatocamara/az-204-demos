@@ -1,5 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-using Azure.Identity;
+﻿using Azure.Identity;
 using Microsoft.Graph;
 
 Console.WriteLine("Starging Graph Demo");
@@ -7,41 +6,14 @@ Console.WriteLine("Starging Graph Demo");
 var tenantId = "YOUR_TENANT_ID";
 var clientId = "YOUR_CLIENT_ID";
 
-var scopes = new string[] { 
-    "user.read",
-};
+var credentials = new InteractiveBrowserCredential(tenantId, clientId);
 
-// var options = new TokenCredentialOptions
-// {
-//     AuthorityHost = AzureAuthorityHosts.AzurePublicCloud
-// };
+var graphClient = new GraphServiceClient(credentials);
 
-var options = new DeviceCodeCredentialOptions {
-    ClientId = clientId,
-    TenantId = tenantId,
-    AuthorityHost = AzureAuthorityHosts.AzurePublicCloud,
-    DeviceCodeCallback = async (deviceCodeResult, cancellationToken) =>
-    {
-        Console.WriteLine($"Message: {deviceCodeResult.Message}");
-        Console.WriteLine($"User Code: {deviceCodeResult.UserCode}");
-        Console.WriteLine($"Device Code: {deviceCodeResult.DeviceCode}");
-        Console.WriteLine($"Verification Uri: {deviceCodeResult.VerificationUri}");
-        await Task.FromResult(0);
-    }
-};
+var stream = await graphClient.Me.Photo.Content.GetAsync();
 
-var credential = new DeviceCodeCredential(options);
+using var fileStream = File.Create("myphoto.png");
 
-var graphClient = new GraphServiceClient(credential, scopes);
-
-var resultStream = await graphClient.Me.Photo.Content.GetAsync();
-
-if (resultStream != null) {
-    var fileStream = File.Create("profile.jpg");
-
-    await resultStream.CopyToAsync(fileStream);
-} else {
-    Console.WriteLine("No photo found");
-}
+await stream.CopyToAsync(fileStream);
 
 Console.WriteLine("Done!");

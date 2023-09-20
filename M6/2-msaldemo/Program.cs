@@ -3,8 +3,8 @@ using Microsoft.Identity.Client;
 
 Console.WriteLine("Starging MSAL demo!");
 
-var tenantId = "c00a40e2-f70e-4610-bc25-de4da1104546";
-string clientId = "a50e17a4-001d-422c-80d2-db068625aa6d";
+var tenantId = "YOUR_TENANT_ID";
+string clientId = "YOUR_CLIENT_ID";
 
 List<string> scopes = new List<string>
 { 
@@ -15,7 +15,7 @@ List<string> scopes = new List<string>
 var app = PublicClientApplicationBuilder
     .Create(clientId)
     .WithAuthority(AzureCloudInstance.AzurePublic, tenantId)    
-    .WithDefaultRedirectUri()
+    .WithRedirectUri("http://localhost")
     .Build();
 
 var result = await app
@@ -28,10 +28,6 @@ if (result == null)
     return;
 }   
 
-var token = result.AccessToken.Substring(0, result.AccessToken.Length - 10);
-
 Console.WriteLine($"Username: {result.Account.Username}");
-
-Console.WriteLine($"Token: {token}");
-
+Console.WriteLine($"Token: {result.AccessToken.Substring(0, result.AccessToken.Length - 10)}");
 Console.WriteLine("Done!");
