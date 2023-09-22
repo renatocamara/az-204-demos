@@ -1,32 +1,50 @@
-#webapp from previous demo
-account="<your web appname>"
+# Variable block
+location="eastus"
+resourceGroup="Demo-AZ204-AppConfig"
+webappname=mywebapp$RANDOM # generate a unique name
+appServicePlan="app-service-plan-$webappname"
+echo "Web-App-Name=""$webappname"
+echo "App-Service-Plan=""$appServicePlan" 
 
-#deploy app config
-az appconfig create --location eastus --name $account --resource-group Demo-AZ204-AppConfig
+# Create a resource group.
+echo "Creating $resourceGroup in" "$location"
+az group create --name $resourceGroup --location $location
 
-#pull connection string
-cstring=$(az appconfig credential list -g Demo-AZ204-AppConfig -n $account --query [3].connectionString -o tsv) 
+# Create an App Service plan
+echo "Creating" $appServicePlan
+az appservice plan create --name $appServicePlan --resource-group $resourceGroup --sku B1
 
-#create flag
-az appconfig feature set -n $account --feature BlackFridayDeals --yes
+# Create a web app.
+echo "Creating" $webappname
+az webapp create --name $webappname --resource-group $resourceGroup --plan $appServicePlan
 
-#disable flag
-az appconfig feature disable -n $account --feature BlackFridayDeals --yes
+# Create App Configuration
+az appconfig create --location $location --name $webappname --resource-group $resourceGroup
 
-#deploy the code
-az webapp deploy --resource-group Demo-AZ204-AppConfig --name $account --type zip --src-path 'src.zip'
+# pull connection string
+cstring=$(az appconfig credential list -g $resourceGroup -n $webappname --query [3].connectionString -o tsv)
+echo "Connection String:" $cstring
 
-#create configuration
-az webapp config connection-string set -n $account -g Demo-AZ204-AppConfig --connection-string-type Custom --settings AppConfig=\"$cstring\"
+# Create Feature flag
+az appconfig feature set -n $webappname --feature BlackFridayDeals --description "Black Friday Deals" --yes
 
-#check the app. You will not see any Black friday deals in menu
-az webapp browse -n $account -g Demo-AZ204-AppConfig 
+# Disable Feature flag
+az appconfig feature disable -n $webappname --feature BlackFridayDeals --yes
 
-#enable flag
-az appconfig feature enable -n $account --feature BlackFridayDeals --yes
+# Deploy the application code
+az webapp deploy --resource-group $resourceGroup --name $webappname --type zip --src-path webapp.zip
 
-#restart webup (takes a few min)
-az webapp restart -n $account -g Demo-AZ204-AppConfig 
+# Create configuration
+az webapp config connection-string set -n $webappname -g $resourceGroup --connection-string-type Custom --settings AppConfig=\"$cstring\"
 
-#check the app to see the Black friday deals menu
-az webapp browse -n $account -g Demo-AZ204-AppConfig 
+# Check the app. You will not see any Black friday deals in menu
+az webapp browse -n $webappname -g $resourceGroup
+
+# Enable Feature flag
+az appconfig feature enable -n $webappname --feature BlackFridayDeals --yes
+
+# Restart webapp (takes a few min.)
+az webapp restart -n $webappname -g $resourceGroup
+
+# Check the app to see the Black friday deals menu
+az webapp browse -n $webappname -g $resourceGroup
