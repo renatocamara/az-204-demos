@@ -12,7 +12,7 @@ az group create --name $resourceGroup --location "$location"
 
 # Create an App Service plan in `FREE` tier.
 echo "Creating" $appServicePlan
-az appservice plan create --name $appServicePlan --resource-group $resourceGroup --sku FREE
+az appservice plan create --name $appServicePlan --resource-group $resourceGroup --sku S1
 
 # Create a web app.
 echo "Creating" $webappname
@@ -20,3 +20,6 @@ az webapp create --name $webappname --resource-group $resourceGroup --plan $appS
 
 # test web app
 az webapp browse --name $webappname --resource-group $resourceGroup
+
+# Zip deployment
+az webapp deployment source config-zip --name $webappname --resource-group $resourceGroup --src webapp.zip

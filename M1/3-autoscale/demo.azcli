@@ -11,7 +11,7 @@ az group create --name $resourceGroup --location $location
 az appservice plan create --name $appServicePlan --resource-group $resourceGroup --sku S1 --is-linux $true
 
 #create web app
-az webapp create --name $webappname --resource-group $resourceGroup --plan $appServicePlan --runtime "PYTHON:3.7"
+az webapp create --name $webappname --resource-group $resourceGroup --plan $appServicePlan --runtime "PYTHON:3.11"
 
 # set up autoscale
 az monitor autoscale create --name $appServicePlan --resource-type "Microsoft.Web/serverfarms" -g $resourceGroup --resource $appServicePlan --min-count 1 --max-count 5 --count 1
