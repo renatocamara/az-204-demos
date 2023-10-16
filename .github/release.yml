@@ -18,3 +18,12 @@ changelog:
     - title: Other Changes
       labels:
         - "*"
+    - title: 🏕 Features
+      labels:
+        - '*'
+      exclude:
+        labels:
+          - dependencies
+     - title: 👒 Dependencies
+      labels:
+        - dependencies
