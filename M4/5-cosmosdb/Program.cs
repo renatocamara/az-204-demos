@@ -2,9 +2,21 @@
 
 Console.WriteLine("Cosmos DB Example");
 
-var uri = "YOUR_URI";
-var key = "YOUR_KEY";
+using Microsoft.Azure.Cosmos;
+using Microsoft.Extensions.Configuration;
+using System;
 
+var builder = new ConfigurationBuilder().AddUserSecrets<Program>();
+var config = builder.Build();
+
+Console.WriteLine("Cosmos DB Example");
+
+var uri = config["COSMOS_DB_URI"];
+var key = config["COSMOS_DB_KEY"];
+/*
+dotnet user-secrets set "COSMOS_DB_URI" "your_cosmos_db_uri"
+dotnet user-secrets set "COSMOS_DB_KEY" "your_cosmos_db_key"
+*/
 var client = new CosmosClient(
     uri, 
     key, 
