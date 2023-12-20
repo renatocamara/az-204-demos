@@ -1,6 +1,6 @@
 # Variable block
 location="eastus"
-resourceGroup="Demo-AZ104-M11-classroom"
+resourceGroup="Demo-AZ104-M11"
 appName=ai-demo$RANDOM # generate a unique name
 
 # create a resource group
