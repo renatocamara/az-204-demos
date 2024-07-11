@@ -1,5 +1,5 @@
 # Variable block
-location="eastus"
+location="eastus2"
 resourceGroup="Demo-AZ204-M10-Qu"
 account=sb$RANDOM # to avoid name collisions generate unique name for your account
 
