@@ -1,6 +1,6 @@
 # Variable block
-location="eastus"
-resourceGroup="Demo-AZ204-M2-Blobs"
+location="eastus2"
+resourceGroup="Demo-AZ204-M3-Blobs"
 # to avoid name collisions generate unique name for your account
 stgaccountname=azureblobs$RANDOM
 

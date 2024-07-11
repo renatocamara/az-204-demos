@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "_3_managed_identity_function": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7007",
+      "launchBrowser": false
+    }
+  }
+}
