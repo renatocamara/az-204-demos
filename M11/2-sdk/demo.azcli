@@ -1,11 +1,11 @@
 # Variable block
-location="eastus"
+location="eastus2"
 resourceGroup="Demo-AZ204-M11-AI"
 appName=aicodedemo$RANDOM # generate a unique name
 echo $appName
 
 # create a resource group
-az group create --location eastus --name $resourceGroup
+az group create --location $location --name $resourceGroup
 
 # create an App Service plan
 az appservice plan create --name $appName --resource-group $resourceGroup --sku S1
