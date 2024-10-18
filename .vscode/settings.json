@@ -1,0 +1,10 @@
+{
+    "azureFunctions.deploySubpath": "M2\\4-local\\60585/bin/Release/net8.0/publish",
+    "azureFunctions.projectLanguage": "C#",
+    "azureFunctions.projectRuntime": "~4",
+    "debug.internalConsoleOptions": "neverOpen",
+    "azureFunctions.preDeployTask": "publish (functions)",
+    "azureFunctions.projectSubpath": "M2\\4-local\\60585",
+    "appService.defaultWebAppToDeploy": "/subscriptions/0316de8c-1475-4a70-8805-d189b90e33d3/resourceGroups/simplewebapprc-rg1/providers/Microsoft.Web/sites/simplewebapprc",
+    "appService.deploySubpath": "M1\\5-webapp"
+}

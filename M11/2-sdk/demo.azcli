@@ -58,7 +58,7 @@ az extension add -n application-insights
 az monitor log-analytics workspace create -g $resourceGroup  -n $appName-ai
 
 # Create Application Insights, the resource required a minute to be provisioned
-az monitor app-insights component create --app $appName-ai --location eastus --resource-group $resourceGroup  --kind web --workspace $appName-ai
+az monitor app-insights component create --app $appName-ai --location $location --resource-group $resourceGroup  --kind web --workspace $appName-ai
 
 
 # Return the App Insides key for future use.
