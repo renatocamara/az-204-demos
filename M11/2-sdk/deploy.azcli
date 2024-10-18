@@ -1,5 +1,5 @@
 # Variable block
-location="eastus"
+location="eastus2"
 resourceGroup="Demo-AZ204-M11-AI"
 
 #must be updated wiht name of your Web App with App Inisights
