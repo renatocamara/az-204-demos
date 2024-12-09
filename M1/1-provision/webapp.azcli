@@ -1,3 +1,4 @@
+
 # Variable block
 location="eastus2"
 resourceGroup="Demo-AZ204-M1"
@@ -22,4 +23,4 @@ az webapp create --name $webappname --resource-group $resourceGroup --plan $appS
 az webapp browse --name $webappname --resource-group $resourceGroup
 
 # Zip deployment
-az webapp deployment source config-zip --name $webappname --resource-group $resourceGroup --src webapp.zip
+az webapp deployment source config-zip --name $webappname --resource-group $resourceGroup --src ../2-deployment/webapp.zip
