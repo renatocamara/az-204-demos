@@ -4,7 +4,17 @@ using Azure.Storage.Blobs.Specialized;
 
 Console.WriteLine("Blob demo");
 
-var connectionString = "";
+// define env. variable.
+// $env:STORAGE_CONNECTION_STRING="
+
+// Get the connection string from the environment variable
+var connectionString = Environment.GetEnvironmentVariable("STORAGE_CONNECTION_STRING");
+
+if (string.IsNullOrEmpty(connectionString))
+{
+    Console.WriteLine("Environment variable 'STORAGE_CONNECTION_STRING' is not set.");
+    return;
+}
 
 var containerName = "demo";
 
