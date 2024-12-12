@@ -33,3 +33,6 @@ az apim api import -g $resourceGroup -n $account --display-name conference-api -
 az apim product create -g $resourceGroup -n $account --product-name "Conference API" --product-id conference-api  --subscription-required true --state published --description "This product to list conferences"
 # adding APIs to product
 az apim product api add -g $resourceGroup -n $account --api-id conference-api --product-id conference-api  
+
+
+## https://deckofcardsapi.com/
