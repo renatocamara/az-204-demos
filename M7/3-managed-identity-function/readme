@@ -1,0 +1,3 @@
+#Source app settings from key vault
+@Microsoft.KeyVault(SecretUri=https://myvault.vault.azure.net/secrets/mysecret)
+@Microsoft.KeyVault(VaultName=akvfordemo;SecretName=secret01)
